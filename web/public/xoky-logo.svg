@@ -1,0 +1,40 @@
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Original XOKY TECHNOLOGIES Logo - Exact Recreation -->
+  
+  <!-- Main interlocking geometric structure -->
+  <g fill="#000000">
+    <!-- Horizontal bars with rounded ends -->
+    <rect x="40" y="60" width="220" height="25" rx="12.5"/>
+    <rect x="40" y="115" width="220" height="25" rx="12.5"/>
+    
+    <!-- Vertical bars with rounded ends -->
+    <rect x="60" y="40" width="25" height="120" rx="12.5"/>
+    <rect x="115" y="40" width="25" height="120" rx="12.5"/>
+    <rect x="160" y="40" width="25" height="120" rx="12.5"/>
+    <rect x="215" y="40" width="25" height="120" rx="12.5"/>
+    
+    <!-- Diagonal crossing elements -->
+    <rect x="90" y="40" width="120" height="25" rx="12.5" transform="rotate(0 150 52.5)"/>
+    <rect x="90" y="135" width="120" height="25" rx="12.5" transform="rotate(0 150 147.5)"/>
+  </g>
+  
+  <!-- Letter cutouts in white -->
+  <g fill="#FFFFFF">
+    <!-- X - crossing diagonal cuts -->
+    <rect x="85" y="90" width="15" height="20" rx="2" transform="rotate(45 92.5 100)"/>
+    <rect x="85" y="90" width="15" height="20" rx="2" transform="rotate(-45 92.5 100)"/>
+    
+    <!-- O - diamond shaped cutout -->
+    <rect x="140" y="85" width="20" height="30" rx="10" transform="rotate(45 150 100)"/>
+    
+    <!-- K - angular cutouts -->
+    <rect x="185" y="70" width="12" height="15" rx="2" transform="rotate(25 191 77.5)"/>
+    <rect x="185" y="115" width="12" height="15" rx="2" transform="rotate(-25 191 122.5)"/>
+    <rect x="190" y="92" width="8" height="16" rx="2"/>
+    
+    <!-- Y - V-shaped cutouts -->
+    <rect x="225" y="70" width="12" height="20" rx="2" transform="rotate(25 231 80)"/>
+    <rect x="245" y="70" width="12" height="20" rx="2" transform="rotate(-25 251 80)"/>
+    <rect x="243" y="105" width="8" height="25" rx="2"/>
+  </g>
+</svg>

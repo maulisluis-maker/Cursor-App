@@ -1,0 +1,16 @@
+{
+  "name": "fitnessstudio-app",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm --prefix server install && npm --prefix web install",
+    "dev": "concurrently -k -n server,web \"npm --prefix server run dev\" \"npm --prefix web run dev\"",
+    "db:push": "npm --prefix server run db:push",
+    "db:studio": "npm --prefix server run db:studio"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  }
+}

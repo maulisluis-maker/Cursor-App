@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite doesn't support enums, using strings instead
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  passwordHash    String
+  role            String   @default("MEMBER")
+  isEmailVerified Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  member          Member?
+  cardDesigns     CardDesign[]
+}
+
+model Member {
+  id              String   @id @default(cuid())
+  membershipId    String   @unique
+  firstName       String
+  lastName        String
+  email           String
+  points          Int      @default(0)
+  status          String   @default("ACTIVE")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  checkinSessions CheckinSession[]
+  pointsTransactions PointsTransaction[]
+  
+  // Google Wallet tracking
+  googleWalletLink       String?
+  googleWalletCreatedAt  DateTime?
+  
+  // Apple Wallet tracking
+  appleWalletLink        String?
+  appleWalletCreatedAt   DateTime?
+  
+  @@map("members")
+}
+
+model PointsTransaction {
+  id        String   @id @default(cuid())
+  memberId  String
+  member    Member   @relation(fields: [memberId], references: [id])
+  delta     Int
+  reason    String?
+  createdAt DateTime @default(now())
+}
+
+model CheckinSession {
+  id         String   @id @default(cuid())
+  memberId   String
+  member     Member   @relation(fields: [memberId], references: [id])
+  checkinAt  DateTime @default(now())
+  checkoutAt DateTime?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model CardDesign {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  isActive    Boolean  @default(false)
+  designData  String   // JSON string containing design configuration
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String
+  user        User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+}

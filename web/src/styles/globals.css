@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0b1220;
+  --card: #0f172a;
+  --muted: #94a3b8;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  @apply bg-slate-950 text-slate-100;
+}
+
+.container {
+  @apply max-w-6xl mx-auto px-4;
+}
+
+.card {
+  @apply bg-slate-900/70 rounded-xl shadow-card border border-slate-800;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors;
+}
+.btn-primary {
+  @apply bg-brand-600 hover:bg-brand-500 text-white;
+}
+.btn-secondary {
+  @apply bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700;
+}
+.input {
+  @apply w-full rounded-lg bg-slate-900 border border-slate-700 px-3 py-2 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-600;
+}
+.label {
+  @apply text-sm text-slate-300 mb-1 block;
+}
+.table {
+  @apply w-full text-left border-separate border-spacing-0;
+}
+.table thead th {
+  @apply text-xs uppercase tracking-wide text-slate-400 py-2 border-b border-slate-800;
+}
+.table tbody td {
+  @apply py-3 border-b border-slate-800;
+}
+
+/* 24-column grid for hourly chart */
+.grid-cols-24 {
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 847 739" xmlns="http://www.w3.org/2000/svg">
+  <!-- Original XKY TECHNOLOGIES Logo - Black outline with white letters -->
+  
+  <!-- Black geometric structure -->
+  <g fill="#000000">
+    <!-- Top horizontal bar -->
+    <rect x="181" y="91" width="484" height="89" rx="44.5"/>
+    
+    <!-- Middle left vertical bar -->
+    <rect x="91" y="181" width="89" height="377" rx="44.5"/>
+    
+    <!-- Middle center vertical bar -->
+    <rect x="271" y="181" width="89" height="377" rx="44.5"/>
+    
+    <!-- Middle right vertical bar -->
+    <rect x="487" y="181" width="89" height="377" rx="44.5"/>
+    
+    <!-- Far right vertical bar -->
+    <rect x="667" y="181" width="89" height="377" rx="44.5"/>
+    
+    <!-- Bottom horizontal bar -->
+    <rect x="181" y="559" width="484" height="89" rx="44.5"/>
+    
+    <!-- Middle horizontal bars -->
+    <rect x="181" y="271" width="484" height="89" rx="44.5"/>
+    <rect x="181" y="379" width="484" height="89" rx="44.5"/>
+  </g>
+  
+  <!-- White letter cutouts X, K, Y -->
+  <g fill="#FFFFFF">
+    <!-- X letter cutout - left side -->
+    <polygon points="135,225 225,315 135,405 91,361 135,315 91,269"/>
+    <polygon points="135,495 225,405 315,495 271,539 225,495 179,539"/>
+    <polygon points="225,225 315,135 359,179 315,225 359,269 315,315"/>
+    <polygon points="315,405 405,315 449,359 405,405 449,449 405,495 315,405"/>
+    
+    <!-- K letter cutout - center -->
+    <rect x="531" y="225" width="45" height="270" rx="22.5"/>
+    <polygon points="576,270 666,180 711,225 621,315 666,405 621,450 576,405 576,360 621,315 576,270"/>
+    
+    <!-- Y letter cutout - right side -->
+    <polygon points="621,225 711,315 756,270 801,315 756,360 711,315 711,450 666,495 621,450 621,315"/>
+    <polygon points="576,270 621,225 666,270 621,315 576,270"/>
+  </g>
+</svg>
