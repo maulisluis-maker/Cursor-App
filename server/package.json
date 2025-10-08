@@ -11,7 +11,7 @@
     "prepare": "prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.0.0",
+    "@prisma/client": "^6.17.0",
     "archiver": "^6.0.1",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^3.0.2",
@@ -39,7 +39,7 @@
     "@types/node": "^20.12.12",
     "@types/nodemailer": "^6.4.14",
     "@types/qrcode": "^1.5.5",
-    "prisma": "^5.16.1",
+    "prisma": "^6.17.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.5"
   }

@@ -14,6 +14,7 @@ import { statsRouter } from './routes/stats';
 import { testRouter } from './routes/test';
 import { cardDesignsRouter } from './routes/cardDesigns';
 import { walletRouter } from './routes/wallet';
+import supportRouter from './routes/support';
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use('/api/stats', statsRouter);
 app.use('/api/test', testRouter);
 app.use('/api/card-designs', cardDesignsRouter);
 app.use('/api/wallet', walletRouter);
+app.use('/api/support', supportRouter);
 
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Unhandled error:', err);

@@ -78,3 +78,35 @@ model CardDesign {
   createdBy   String
   user        User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
 }
+
+model SupportTicket {
+  id          String   @id @default(cuid())
+  ticketNumber String  @unique
+  subject     String
+  status      String   @default("OPEN") // OPEN, IN_PROGRESS, RESOLVED, CLOSED
+  priority    String   @default("NORMAL") // LOW, NORMAL, HIGH, URGENT
+  category    String?  // TECHNICAL, BILLING, GENERAL, etc.
+  createdBy   String
+  assignedTo  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  resolvedAt  DateTime?
+  messages    SupportMessage[]
+  
+  @@map("support_tickets")
+}
+
+model SupportMessage {
+  id          String   @id @default(cuid())
+  ticketId    String
+  ticket      SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  senderId    String
+  senderRole  String   // MEMBER, ADMIN
+  message     String
+  isInternal  Boolean  @default(false) // Internal notes only visible to admins
+  attachments String?  // JSON array of attachment URLs
+  createdAt   DateTime @default(now())
+  readAt      DateTime?
+  
+  @@map("support_messages")
+}

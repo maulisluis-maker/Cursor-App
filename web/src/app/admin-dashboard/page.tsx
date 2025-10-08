@@ -160,6 +160,17 @@ export default function AdminDashboardPage() {
 						</p>
 					</a>
 
+					<a href="/admin-dashboard/support" className="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-green-500 transition-colors">
+						<div className="flex items-center mb-4">
+							<div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+								<span className="text-white text-lg">💬</span>
+							</div>
+							<h3 className="text-lg font-semibold text-white ml-3">Support Center</h3>
+						</div>
+						<p className="text-slate-300 text-sm">
+							Verwalte Support-Anfragen und kommuniziere mit Mitgliedern.
+						</p>
+					</a>
 
 					<a href="/test-login" className="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-gray-500 transition-colors">
 						<div className="flex items-center mb-4">

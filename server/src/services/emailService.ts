@@ -380,4 +380,176 @@ export class EmailService {
       return false;
     }
   }
+
+  async sendSupportTicketNotification(
+    adminEmail: string,
+    ticketNumber: string,
+    subject: string,
+    memberName: string,
+    memberEmail: string,
+    message: string,
+    priority: string
+  ): Promise<boolean> {
+    try {
+      const priorityEmoji = priority === 'URGENT' ? '🚨' : priority === 'HIGH' ? '⚠️' : priority === 'NORMAL' ? '📋' : '📝';
+      const priorityColor = priority === 'URGENT' ? '#dc2626' : priority === 'HIGH' ? '#f59e0b' : priority === 'NORMAL' ? '#3b82f6' : '#6b7280';
+
+      const mailOptions = {
+        from: process.env.MAIL_FROM || this.transporter.options.auth?.user,
+        to: adminEmail,
+        subject: `${priorityEmoji} Neues Support-Ticket: ${ticketNumber}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+              <h1 style="margin: 0; font-size: 28px;">💬 XKYS Support Center</h1>
+              <p style="margin: 10px 0 0 0; font-size: 16px;">Neues Support-Ticket</p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
+              <div style="background: ${priorityColor}; color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+                <h2 style="margin: 0; font-size: 20px;">${priorityEmoji} Priorität: ${priority}</h2>
+              </div>
+              
+              <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+                <h3 style="color: #333; margin-top: 0;">📋 Ticket Details</h3>
+                <table style="width: 100%; color: #666;">
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold;">Ticket-Nr:</td>
+                    <td style="padding: 8px 0;">${ticketNumber}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold;">Betreff:</td>
+                    <td style="padding: 8px 0;">${subject}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold;">Von:</td>
+                    <td style="padding: 8px 0;">${memberName}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold;">E-Mail:</td>
+                    <td style="padding: 8px 0;">${memberEmail}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold;">Priorität:</td>
+                    <td style="padding: 8px 0; color: ${priorityColor}; font-weight: bold;">${priority}</td>
+                  </tr>
+                </table>
+              </div>
+              
+              <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #10b981;">
+                <h3 style="color: #333; margin-top: 0;">💬 Nachricht</h3>
+                <p style="color: #666; line-height: 1.6; white-space: pre-wrap;">${message}</p>
+              </div>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${process.env.FRONTEND_URL || 'http://localhost:3001'}/admin-dashboard/support" style="display: inline-block; background: #3b82f6; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+                  📋 Ticket im Admin-Panel öffnen
+                </a>
+              </div>
+              
+              <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
+                <p style="color: #856404; margin: 0; font-size: 14px;">
+                  <strong>⏰ Schnelle Reaktion erwünscht:</strong> Bitte beantworte dieses Ticket so schnell wie möglich, um eine hohe Kundenzufriedenheit zu gewährleisten.
+                </p>
+              </div>
+              
+              <div style="border-top: 1px solid #ddd; padding-top: 20px; margin-top: 30px;">
+                <p style="color: #999; font-size: 14px; text-align: center; margin: 0;">
+                  Diese E-Mail wurde automatisch generiert.
+                </p>
+                <p style="color: #999; font-size: 12px; text-align: center; margin: 10px 0 0 0;">
+                  Powered by XKYS Technologies
+                </p>
+              </div>
+            </div>
+          </div>
+        `
+      };
+
+      await this.transporter.sendMail(mailOptions);
+      return true;
+    } catch (error) {
+      console.error('Error sending support ticket notification:', error);
+      return false;
+    }
+  }
+
+  async sendSupportReplyNotification(
+    memberEmail: string,
+    memberName: string,
+    ticketNumber: string,
+    subject: string,
+    replyMessage: string
+  ): Promise<boolean> {
+    try {
+      const mailOptions = {
+        from: process.env.MAIL_FROM || this.transporter.options.auth?.user,
+        to: memberEmail,
+        subject: `💬 Neue Antwort auf dein Support-Ticket ${ticketNumber}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+              <h1 style="margin: 0; font-size: 28px;">💬 XKYS Support Center</h1>
+              <p style="margin: 10px 0 0 0; font-size: 16px;">Neue Antwort vom Support-Team</p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
+              <h2 style="color: #333; margin-bottom: 20px;">Hallo ${memberName}!</h2>
+              
+              <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+                Das Support-Team hat auf dein Ticket geantwortet!
+              </p>
+              
+              <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+                <h3 style="color: #333; margin-top: 0;">📋 Ticket Details</h3>
+                <table style="width: 100%; color: #666;">
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold;">Ticket-Nr:</td>
+                    <td style="padding: 8px 0;">${ticketNumber}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold;">Betreff:</td>
+                    <td style="padding: 8px 0;">${subject}</td>
+                  </tr>
+                </table>
+              </div>
+              
+              <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #10b981;">
+                <h3 style="color: #333; margin-top: 0;">💬 Antwort vom Support-Team</h3>
+                <p style="color: #666; line-height: 1.6; white-space: pre-wrap;">${replyMessage}</p>
+              </div>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${process.env.FRONTEND_URL || 'http://localhost:3001'}/member-dashboard/support" style="display: inline-block; background: #3b82f6; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+                  📋 Ticket anzeigen & antworten
+                </a>
+              </div>
+              
+              <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h4 style="color: #2c5aa0; margin-top: 0;">💡 Tipp:</h4>
+                <p style="color: #666; margin: 0;">
+                  Du kannst direkt auf diese Nachricht antworten, indem du das Ticket im Member-Portal öffnest.
+                </p>
+              </div>
+              
+              <div style="border-top: 1px solid #ddd; padding-top: 20px; margin-top: 30px;">
+                <p style="color: #999; font-size: 14px; text-align: center; margin: 0;">
+                  Diese E-Mail wurde automatisch generiert.
+                </p>
+                <p style="color: #999; font-size: 12px; text-align: center; margin: 10px 0 0 0;">
+                  Powered by XKYS Technologies
+                </p>
+              </div>
+            </div>
+          </div>
+        `
+      };
+
+      await this.transporter.sendMail(mailOptions);
+      return true;
+    } catch (error) {
+      console.error('Error sending support reply notification:', error);
+      return false;
+    }
+  }
 }
