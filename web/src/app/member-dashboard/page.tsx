@@ -180,9 +180,9 @@ export default function MemberDashboard() {
         <div className="mt-6">
           <h2 className="text-xl font-bold text-white mb-4">Schnellzugriff</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <a 
-              href="/member-dashboard/support"
-              className="bg-slate-800 p-4 rounded-lg border border-slate-700 hover:border-green-500 transition-colors flex items-center"
+            <button 
+              onClick={() => window.open('/support', '_blank', 'width=1200,height=800')}
+              className="bg-slate-800 p-4 rounded-lg border border-slate-700 hover:border-green-500 transition-colors flex items-center w-full text-left"
             >
               <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center mr-4">
                 <span className="text-white text-lg">💬</span>
@@ -191,7 +191,7 @@ export default function MemberDashboard() {
                 <h3 className="text-white font-semibold">Support Center</h3>
                 <p className="text-slate-400 text-sm">Hilfe & Fragen</p>
               </div>
-            </a>
+            </button>
           </div>
         </div>
       </div>
