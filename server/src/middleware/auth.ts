@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-export type AuthClaims = { sub: string; role: 'MEMBER' | 'ADMIN' };
+export type AuthClaims = { sub?: string; userId?: string; role: 'MEMBER' | 'ADMIN' };
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   const header = req.headers.authorization;
@@ -15,8 +15,12 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   }
   
   try {
-    const claims = jwt.verify(token, process.env.JWT_SECRET as string) as AuthClaims;
-    (req as any).auth = claims;
+    const claims = jwt.verify(token, process.env.JWT_SECRET as string) as any;
+    (req as any).auth = {
+      sub: claims.userId || claims.sub,
+      userId: claims.userId || claims.sub,
+      role: claims.role
+    };
     next();
   } catch {
     res.status(401).json({ error: 'Unauthorized' });

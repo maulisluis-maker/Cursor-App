@@ -161,16 +161,16 @@ export default function MemberDashboard() {
               </div>
 
               <div className="bg-slate-800 p-4 rounded-lg">
-                <h3 className="text-white font-medium mb-2">Digitale Mitgliedskarte</h3>
+                <h3 className="text-white font-medium mb-2">🎯 Google Wallet Karte</h3>
                 <p className="text-slate-400 text-sm mb-3">
-                  Deine digitale Mitgliedskarte wurde bei der Registrierung per E-Mail gesendet.
+                  Verwalte deine personalisierte Google Wallet Karte und füge sie zu deinem Smartphone hinzu.
                 </p>
-                <button
-                  onClick={() => alert('Deine digitale Mitgliedskarte wurde bei der Registrierung per E-Mail gesendet. Prüfe dein E-Mail-Postfach.')}
-                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                <a
+                  href="/member/wallet-card"
+                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 inline-block"
                 >
-                  E-Mail erneut senden
-                </button>
+                  🎯 Meine Wallet-Karte
+                </a>
               </div>
             </div>
           </Card>

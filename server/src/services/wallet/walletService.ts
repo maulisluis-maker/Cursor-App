@@ -1,15 +1,15 @@
 import { AppleWalletService } from './appleWalletService';
-import { GoogleWalletService } from './googleWalletService';
+import { GoogleWalletServiceReal } from './googleWalletServiceReal';
 import { WalletPassPayload, DesignData, WalletPassResult } from './types';
 import QRCode from 'qrcode';
 
 export class WalletService {
   private appleWalletService: AppleWalletService;
-  private googleWalletService: GoogleWalletService;
+  private googleWalletService: GoogleWalletServiceReal;
 
   constructor() {
     this.appleWalletService = new AppleWalletService();
-    this.googleWalletService = new GoogleWalletService();
+    this.googleWalletService = new GoogleWalletServiceReal();
   }
 
   async generateWalletPass(

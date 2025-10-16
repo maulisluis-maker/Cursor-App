@@ -199,6 +199,42 @@ walletRouter.get('/google/:memberId', async (req, res) => {
   }
 });
 
+// Test endpoint for Google Wallet API (no authentication required)
+walletRouter.post('/test-google-wallet', async (req, res) => {
+  try {
+    const { memberId = 'test-member-123', membershipId = 'TEST001', fullName = 'Test User', points = 50 } = req.body;
+    
+    const payload = {
+      memberId,
+      membershipId,
+      fullName,
+      points,
+      qrData: membershipId
+    };
+
+    const designData = {
+      primaryColor: '#3b82f6',
+      secondaryColor: '#1d4ed8',
+      cardStyle: 'modern'
+    };
+
+    const result = await walletService.generateWalletPass(payload, designData, 'google');
+    
+    res.json({
+      success: true,
+      message: 'Google Wallet pass generated successfully',
+      data: result
+    });
+  } catch (error) {
+    console.error('Google Wallet test error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      message: 'Google Wallet test failed'
+    });
+  }
+});
+
 // New route: Generate wallet pass with design from Design Center
 walletRouter.post('/generate-with-design', requireAuth, async (req, res) => {
   try {

@@ -146,6 +146,22 @@ export default function AdminDashboardPage() {
 					</div>
 				</div>
 
+				{/* Important Notice */}
+				<div className="bg-gradient-to-r from-yellow-900/50 to-orange-900/50 border-2 border-yellow-500 rounded-lg p-6 mb-6">
+					<div className="flex items-start space-x-4">
+						<div className="text-3xl">⚠️</div>
+						<div className="flex-1">
+							<h3 className="text-lg font-bold text-yellow-200 mb-2">🎯 Wichtiger Hinweis: Master-Design erforderlich</h3>
+							<p className="text-yellow-100 text-sm mb-2">
+								Bevor Mitglieder Google Wallet Karten erhalten können, musst du ein <strong>Master-Design erstellen und aktivieren</strong>!
+							</p>
+							<p className="text-yellow-100 text-sm">
+								<strong>Workflow:</strong> Design Center → Design erstellen → Speichern → Aktivieren → Mitglieder bekommen Karten
+							</p>
+						</div>
+					</div>
+				</div>
+
 				{/* Action Cards */}
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
 					<a href="/admin/design-center" className="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-blue-500 transition-colors">
@@ -154,9 +170,35 @@ export default function AdminDashboardPage() {
 								<span className="text-white text-lg">🎨</span>
 							</div>
 							<h3 className="text-lg font-semibold text-white ml-3">Design Center</h3>
+							<span className="ml-auto bg-yellow-500 text-yellow-900 text-xs px-2 py-1 rounded font-bold">WICHTIG</span>
 						</div>
 						<p className="text-slate-300 text-sm">
-							Erstelle und bearbeite digitale Mitgliederkarten für Apple Wallet und Google Wallet.
+							Erstelle das Master-Design für alle Google Wallet Karten. Mitglieder bekommen personalisierte Versionen.
+						</p>
+					</a>
+
+					<a href="/admin/wallet-setup" className="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-yellow-500 transition-colors">
+						<div className="flex items-center mb-4">
+							<div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center">
+								<span className="text-white text-lg">⚙️</span>
+							</div>
+							<h3 className="text-lg font-semibold text-white ml-3">Wallet Setup</h3>
+							<span className="ml-auto bg-yellow-500 text-yellow-900 text-xs px-2 py-1 rounded font-bold">PRÜFEN</span>
+						</div>
+						<p className="text-slate-300 text-sm">
+							Überprüfe den Setup-Status und stelle sicher, dass ein Master-Design aktiv ist.
+						</p>
+					</a>
+
+					<a href="/admin/wallet-cards" className="bg-slate-800 rounded-lg p-6 border border-slate-700 hover:border-green-500 transition-colors">
+						<div className="flex items-center mb-4">
+							<div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+								<span className="text-white text-lg">🎯</span>
+							</div>
+							<h3 className="text-lg font-semibold text-white ml-3">Wallet-Karten Management</h3>
+						</div>
+						<p className="text-slate-300 text-sm">
+							Verwalte alle personalisierten Google Wallet Karten, Punkte und sende Links an Mitglieder.
 						</p>
 					</a>
 

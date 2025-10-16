@@ -9,15 +9,19 @@ export default function RegisterPage() {
     email: '',
     password: '',
     confirmPassword: '',
-    walletOption: ''
+    walletOption: '',
+    wantsGoogleWallet: false
   });
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [passwordMatch, setPasswordMatch] = useState<boolean | null>(null);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    const newFormData = { ...formData, [name]: value };
+    const { name, value, type, checked } = e.target;
+    const newFormData = { 
+      ...formData, 
+      [name]: type === 'checkbox' ? checked : value 
+    };
     setFormData(newFormData);
     
     // Check password match in real-time
@@ -43,6 +47,12 @@ export default function RegisterPage() {
       return;
     }
 
+    // If Google Wallet is selected, the Google Wallet card option must also be checked
+    if (formData.walletOption === 'google' && !formData.wantsGoogleWallet) {
+      setError('Wenn du Google Wallet auswählst, musst du auch "Google Wallet Karte gewünscht" ankreuzen.');
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setError('Die Passwörter stimmen nicht überein. Bitte überprüfe deine Eingabe.');
       return;
@@ -57,7 +67,8 @@ export default function RegisterPage() {
           password: formData.password, 
           firstName: formData.firstName, 
           lastName: formData.lastName,
-          walletType: formData.walletOption 
+          walletType: formData.walletOption,
+          wantsGoogleWallet: formData.wantsGoogleWallet
         })
       });
       
@@ -226,6 +237,46 @@ export default function RegisterPage() {
             </p>
           </div>
 
+          <div>
+            <label className={`flex items-center p-3 border rounded-md hover:bg-slate-700 cursor-pointer transition-colors ${
+              formData.walletOption === 'google' 
+                ? formData.wantsGoogleWallet 
+                  ? 'border-green-500 bg-green-900/20' 
+                  : 'border-red-500 bg-red-900/20' 
+                : 'border-slate-600 bg-slate-700'
+            }`}>
+              <input
+                type="checkbox"
+                name="wantsGoogleWallet"
+                checked={formData.wantsGoogleWallet}
+                onChange={handleChange}
+                className="mr-3 text-blue-600 focus:ring-blue-500"
+              />
+              <div className="flex items-center">
+                <span className="text-2xl mr-2">🎯</span>
+                <div>
+                  <div className="font-medium text-white">
+                    Google Wallet Karte gewünscht
+                    {formData.walletOption === 'google' && (
+                      <span className="text-red-400 ml-2">*</span>
+                    )}
+                  </div>
+                  <div className="text-sm text-slate-400">
+                    {formData.walletOption === 'google' 
+                      ? "Pflichtfeld: Nach Email-Bestätigung bekommst du einen Link zu deiner personalisierten Google Wallet Karte"
+                      : "Nach Email-Bestätigung bekommst du einen Link zu deiner personalisierten Google Wallet Karte"
+                    }
+                  </div>
+                  {formData.walletOption === 'google' && !formData.wantsGoogleWallet && (
+                    <div className="text-red-400 text-sm mt-1 font-medium">
+                      ⚠️ Pflichtfeld - Du musst diese Option ankreuzen!
+                    </div>
+                  )}
+                </div>
+              </div>
+            </label>
+          </div>
+
           {error && (
             <div className="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-md">
               {error}
@@ -240,14 +291,19 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            disabled={passwordMatch === false}
+            disabled={passwordMatch === false || (formData.walletOption === 'google' && !formData.wantsGoogleWallet)}
             className={`w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 ${
-              passwordMatch === false
+              passwordMatch === false || (formData.walletOption === 'google' && !formData.wantsGoogleWallet)
                 ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                 : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500'
             }`}
           >
-            {passwordMatch === false ? 'Passwörter müssen übereinstimmen' : 'Registrieren'}
+            {passwordMatch === false 
+              ? 'Passwörter müssen übereinstimmen' 
+              : (formData.walletOption === 'google' && !formData.wantsGoogleWallet)
+                ? 'Google Wallet Karte muss angewählt werden'
+                : 'Registrieren'
+            }
           </button>
         </form>
 

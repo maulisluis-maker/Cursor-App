@@ -552,4 +552,83 @@ export class EmailService {
       return false;
     }
   }
+
+  async sendGoogleWalletCardEmail(memberEmail: string, memberName: string, cardUrl: string, membershipId: string) {
+    try {
+      const mailOptions = {
+        from: process.env.MAIL_FROM || this.transporter.options.auth?.user,
+        to: memberEmail,
+        subject: '🎯 Deine personalisierte Google Wallet Karte ist bereit!',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+              <h1 style="margin: 0; font-size: 28px;">🎯 XKYS Fitness</h1>
+              <p style="margin: 10px 0 0 0; font-size: 16px;">Deine personalisierte Google Wallet Karte!</p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
+              <h2 style="color: #333; margin-bottom: 20px;">Hallo ${memberName}!</h2>
+              
+              <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+                🎉 Perfekt! Deine Email wurde bestätigt und deine personalisierte Google Wallet Karte ist bereit! 
+                Diese Karte ist nur für dich erstellt und enthält deine individuellen Daten.
+              </p>
+              
+              <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+                <h3 style="color: #333; margin-top: 0;">📱 Deine personalisierte Karte:</h3>
+                <ul style="color: #666; line-height: 1.8;">
+                  <li><strong>Mitgliedsnummer:</strong> ${membershipId}</li>
+                  <li><strong>Name:</strong> ${memberName}</li>
+                  <li><strong>Status:</strong> Aktiv und bereit</li>
+                  <li><strong>Punkte:</strong> Werden automatisch aktualisiert</li>
+                </ul>
+              </div>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <h3 style="color: #333; margin-bottom: 15px;">Klicke hier für deine Karte:</h3>
+                <a href="${cardUrl}" style="display: inline-block; background: #3b82f6; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; margin: 10px;">
+                  🎯 Meine Google Wallet Karte hinzufügen
+                </a>
+              </div>
+              
+              <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h4 style="color: #2c5aa0; margin-top: 0;">💡 Was macht deine Karte besonders:</h4>
+                <ul style="color: #666; line-height: 1.6;">
+                  <li>✅ <strong>Persönlich:</strong> Nur für dich erstellt</li>
+                  <li>✅ <strong>Individuell:</strong> Deine Mitgliedsnummer und Daten</li>
+                  <li>✅ <strong>Automatisch:</strong> Punkte werden live aktualisiert</li>
+                  <li>✅ <strong>Sicher:</strong> Nur du kannst sie nutzen</li>
+                  <li>✅ <strong>Verwaltet:</strong> Admin kann Punkte verwalten</li>
+                </ul>
+              </div>
+              
+              <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;">
+                <h4 style="color: #92400e; margin-top: 0;">⚠️ Wichtiger Hinweis:</h4>
+                <p style="color: #92400e; margin: 0; line-height: 1.6;">
+                  Diese Karte ist personalisiert und nur für dich. Wenn du Probleme beim Hinzufügen hast, 
+                  kontaktiere uns über das Support Center in deinem Mitgliederbereich.
+                </p>
+              </div>
+              
+              <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                <p style="color: #9ca3af; font-size: 14px;">
+                  Mit freundlichen Grüßen,<br>
+                  <strong>XKYS Fitness Team</strong>
+                </p>
+                <p style="color: #9ca3af; font-size: 12px; margin-top: 10px;">
+                  Diese Email wurde automatisch nach deiner Email-Bestätigung gesendet.
+                </p>
+              </div>
+            </div>
+          </div>
+        `
+      };
+
+      await this.transporter.sendMail(mailOptions);
+      console.log(`✅ Google Wallet card email sent to ${memberEmail}`);
+    } catch (error) {
+      console.error('Failed to send Google Wallet card email:', error);
+      throw error;
+    }
+  }
 }

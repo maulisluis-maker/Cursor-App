@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import { authRouter } from './routes/auth';
 import { membersRouter } from './routes/members';
+import { memberRouter } from './routes/member';
 import { passesRouter } from './routes/passes';
 import { checkinRouter } from './routes/checkin';
 import { privacyRouter } from './routes/privacy';
@@ -14,6 +15,7 @@ import { statsRouter } from './routes/stats';
 import { testRouter } from './routes/test';
 import { cardDesignsRouter } from './routes/cardDesigns';
 import { walletRouter } from './routes/wallet';
+import { adminRouter } from './routes/admin';
 import supportRouter from './routes/support';
 
 const app = express();
@@ -33,6 +35,7 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/members', membersRouter);
+app.use('/api/member', memberRouter);
 app.use('/api/passes', passesRouter);
 app.use('/api/checkin', checkinRouter);
 app.use('/api/privacy', privacyRouter);
@@ -41,6 +44,7 @@ app.use('/api/stats', statsRouter);
 app.use('/api/test', testRouter);
 app.use('/api/card-designs', cardDesignsRouter);
 app.use('/api/wallet', walletRouter);
+app.use('/api/admin', adminRouter);
 app.use('/api/support', supportRouter);
 
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

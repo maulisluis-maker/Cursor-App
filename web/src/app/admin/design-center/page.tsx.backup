@@ -141,36 +141,10 @@ export default function DesignCenter() {
   const [draggingLayer, setDraggingLayer] = useState<string | null>(null);
   const [dragOverLayer, setDragOverLayer] = useState<string | null>(null);
   const [walletExportLoading, setWalletExportLoading] = useState<string | null>(null);
-  const [selectedWalletFormat, setSelectedWalletFormat] = useState<'google' | 'apple'>('google');
 
-  // Card dimensions - Optimiert für Apple & Google Wallet
-  const CARD_WIDTH = selectedWalletFormat === 'google' ? 400 : 375;  // Google: 5:3, Apple: 3:2
-  const CARD_HEIGHT = selectedWalletFormat === 'google' ? 240 : 232;
-
-  // Funktion zum Anpassen der Elemente beim Formatwechsel
-  const adjustElementsForFormat = (newFormat: 'google' | 'apple') => {
-    const oldWidth = selectedWalletFormat === 'google' ? 400 : 375;
-    const oldHeight = selectedWalletFormat === 'google' ? 240 : 232;
-    const newWidth = newFormat === 'google' ? 400 : 375;
-    const newHeight = newFormat === 'google' ? 240 : 232;
-    
-    const scaleX = newWidth / oldWidth;
-    const scaleY = newHeight / oldHeight;
-    
-    const adjustedDesignData = {
-      ...designData,
-      elements: designData.elements.map(element => ({
-        ...element,
-        x: Math.min(element.x * scaleX, newWidth - element.width * scaleX),
-        y: Math.min(element.y * scaleY, newHeight - element.height * scaleY),
-        width: element.width * scaleX,
-        height: element.height * scaleY
-      }))
-    };
-    
-    setDesignData(adjustedDesignData);
-    saveToHistory(adjustedDesignData);
-  };
+  // Card dimensions
+  const CARD_WIDTH = 320;
+  const CARD_HEIGHT = 192;
 
   // Font families - sorted by category
   const fontFamilies = [
@@ -738,55 +712,6 @@ export default function DesignCenter() {
           <div className="space-y-6">
 
 
-            {/* Wallet Format Selector */}
-            <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-              <h2 className="text-xl font-semibold text-white mb-4">📱 Wallet Format</h2>
-              <div className="space-y-3">
-                <button
-                  onClick={() => {
-                    if (selectedWalletFormat !== 'google') {
-                      adjustElementsForFormat('google');
-                      setSelectedWalletFormat('google');
-                    }
-                  }}
-                  className={`w-full p-3 rounded-lg border-2 transition-all duration-200 ${
-                    selectedWalletFormat === 'google' 
-                      ? 'border-green-500 bg-green-500/20 shadow-lg' 
-                      : 'border-slate-600 hover:border-slate-500 hover:shadow-md'
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <span className="text-2xl mr-3">🏪</span>
-                    <div className="text-left">
-                      <div className="font-medium text-white">Google Wallet</div>
-                      <div className="text-sm text-slate-400">400 × 240px (5:3)</div>
-                    </div>
-                  </div>
-                </button>
-                <button
-                  onClick={() => {
-                    if (selectedWalletFormat !== 'apple') {
-                      adjustElementsForFormat('apple');
-                      setSelectedWalletFormat('apple');
-                    }
-                  }}
-                  className={`w-full p-3 rounded-lg border-2 transition-all duration-200 ${
-                    selectedWalletFormat === 'apple' 
-                      ? 'border-gray-400 bg-gray-400/20 shadow-lg' 
-                      : 'border-slate-600 hover:border-slate-500 hover:shadow-md'
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <span className="text-2xl mr-3">🍎</span>
-                    <div className="text-left">
-                      <div className="font-medium text-white">Apple Wallet</div>
-                      <div className="text-sm text-slate-400">375 × 232px (3:2)</div>
-                    </div>
-                  </div>
-                </button>
-              </div>
-            </div>
-
             {/* Templates */}
             <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
               <h2 className="text-xl font-semibold text-white mb-4">📋 Vorlagen</h2>
@@ -1003,7 +928,7 @@ export default function DesignCenter() {
               {/* Card Info */}
               <div className="text-center">
                 <p className="text-slate-300 text-sm">
-                  Kartenformat: {CARD_WIDTH} × {CARD_HEIGHT}px ({selectedWalletFormat === 'google' ? '5:3' : '3:2'})
+                  Kartenformat: {CARD_WIDTH} × {CARD_HEIGHT}px
                 </p>
                 <p className="text-slate-400 text-xs mt-1">
                   Drag & Drop Elemente • Klicken zum Auswählen • Scrollen zum Vergrößern

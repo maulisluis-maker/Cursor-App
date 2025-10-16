@@ -16,7 +16,7 @@ const registerSchema = z.object({
 
 authRouter.post('/register', async (req, res) => {
   try {
-    const { email, password, firstName, lastName, walletType } = req.body;
+    const { email, password, firstName, lastName, walletType, wantsGoogleWallet } = req.body;
 
     if (!email || !password || !firstName || !lastName) {
       return res.status(400).json({ error: 'All fields are required' });
@@ -44,6 +44,7 @@ authRouter.post('/register', async (req, res) => {
         passwordHash,
         role: 'MEMBER' as any,
         isEmailVerified: false, // Email not verified yet
+        wantsGoogleWallet: wantsGoogleWallet || false,
         member: {
           create: {
             membershipId,
@@ -272,6 +273,66 @@ authRouter.get('/verify', async (req, res) => {
         where: { id: user.member.id },
         data: { status: 'ACTIVE' }
       });
+
+      // If user wants Google Wallet, generate the card after email verification
+      if (user.wantsGoogleWallet) {
+        try {
+          const { WalletService } = require('../services/wallet/walletService');
+          const walletService = new WalletService();
+          
+          // Get the active card design
+          const activeDesign = await prisma.cardDesign.findFirst({
+            where: { isActive: true },
+            orderBy: { createdAt: 'desc' }
+          });
+
+          if (activeDesign) {
+            const payload = {
+              memberId: user.member.id,
+              membershipId: user.member.membershipId,
+              fullName: `${user.member.firstName} ${user.member.lastName}`,
+              points: user.member.points,
+              qrData: user.member.membershipId
+            };
+
+            const designData = JSON.parse(activeDesign.designData);
+            const walletResult = await walletService.generateWalletPass(payload, designData, 'google');
+
+            if (walletResult.success && walletResult.passUrl) {
+              // Create wallet card record
+              await prisma.walletCard.create({
+                data: {
+                  memberId: user.member.id,
+                  cardUrl: walletResult.passUrl,
+                  points: user.member.points,
+                  cardDesignId: activeDesign.id,
+                  isActive: true
+                }
+              });
+
+              // Send Google Wallet email to member
+              const { EmailService } = require('../services/emailService');
+              const emailService = new EmailService();
+              
+              await emailService.sendGoogleWalletCardEmail(
+                user.email,
+                `${user.member.firstName} ${user.member.lastName}`,
+                walletResult.passUrl,
+                user.member.membershipId
+              );
+
+              console.log(`✅ Google Wallet card generated and sent to ${user.email}`);
+            }
+          } else {
+            console.log('⚠️ WICHTIG: Kein aktives Master-Design gefunden! Admin muss erst ein Design im Design Center erstellen und aktivieren.');
+            console.log(`   → Mitglied ${user.email} wurde registriert, aber keine Wallet-Karte erstellt.`);
+            console.log(`   → Mitglied kann später eine Karte anfordern, sobald ein Design aktiv ist.`);
+          }
+        } catch (walletError) {
+          console.error('❌ Google Wallet generation failed after email verification:', walletError);
+          // Don't fail verification if wallet generation fails
+        }
+      }
     }
 
     // Redirect to verified page

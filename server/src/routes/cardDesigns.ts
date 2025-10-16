@@ -21,13 +21,18 @@ cardDesignsRouter.get('/', requireAuth, async (req, res) => {
 cardDesignsRouter.post('/', requireAuth, async (req, res) => {
   try {
     const { name, description, designData } = req.body;
-    const userId = (req as any).user.id;
+    const userId = (req as any).auth?.sub || (req as any).auth?.userId;
+    
+    if (!userId) {
+      console.error('No userId found in auth:', (req as any).auth);
+      return res.status(401).json({ error: 'User ID not found in token' });
+    }
 
     const design = await prisma.cardDesign.create({
       data: {
         name,
         description,
-        designData: JSON.stringify(designData),
+        designData: typeof designData === 'string' ? designData : JSON.stringify(designData),
         createdBy: userId
       }
     });

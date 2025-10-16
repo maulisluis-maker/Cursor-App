@@ -15,6 +15,7 @@ model User {
   passwordHash    String
   role            String   @default("MEMBER")
   isEmailVerified Boolean  @default(false)
+  wantsGoogleWallet Boolean @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   member          Member?
@@ -35,6 +36,7 @@ model Member {
   user            User     @relation(fields: [userId], references: [id])
   checkinSessions CheckinSession[]
   pointsTransactions PointsTransaction[]
+  walletCards     WalletCard[]
   
   // Google Wallet tracking
   googleWalletLink       String?
@@ -77,6 +79,7 @@ model CardDesign {
   updatedAt   DateTime @updatedAt
   createdBy   String
   user        User     @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  walletCards WalletCard[]
 }
 
 model SupportTicket {
@@ -109,4 +112,20 @@ model SupportMessage {
   readAt      DateTime?
   
   @@map("support_messages")
+}
+
+model WalletCard {
+  id              String   @id @default(cuid())
+  memberId        String
+  member          Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  cardUrl         String   @unique
+  points          Int      @default(0)
+  isActive        Boolean  @default(true)
+  cardDesignId    String?
+  cardDesign      CardDesign? @relation(fields: [cardDesignId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  lastAccessedAt  DateTime?
+  
+  @@map("wallet_cards")
 }
